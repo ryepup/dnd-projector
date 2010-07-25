@@ -2,5 +2,9 @@
 
 (in-package :dnd-projector)
 
-(defun test ()
-  (format t "Hello World from new project dnd-projector~%"))
+
+(defun start-server ()
+  (hunchentoot:start (make-instance 'hunchentoot:acceptor :port 8081))
+  (sb-thread:make-thread #'read-ir-commands
+			 :name "IR reader")
+  )

@@ -1,0 +1,11 @@
+<tal:include
+   tal:in-package=":dnd-projector"
+   tal:name="main.tal"
+   xmlns:tal="http://common-lisp.net/project/bese/tal/core"
+   xmlns:param="http://common-lisp.net/project/bese/tal/params">
+  <param:subtitle>DND Projector</param:subtitle>
+  <param:title>DND Projector</param:title>
+  <param:content>
+	<div id="ir-input">IR input</div>
+  </param:content>
+</tal:include>

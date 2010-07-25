@@ -1,0 +1,4 @@
+
+* website shell
+* read IR input, pass through chanl to other code
+* jquery to make ajax requests

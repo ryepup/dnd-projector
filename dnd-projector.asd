@@ -4,4 +4,5 @@
   :serial t
   ;; add new files to this list:
   :components ((:file "package") (:file "dnd-projector"))
-  :depends-on (#+nil :cl-ppcre))
+  :depends-on (#:cl-ppcre #:chanl #:alexandria #:iterate #:cl-arduino
+			  #:hunchentoot #:yaclml))
