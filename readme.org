@@ -1,4 +1,18 @@
 
-* website shell
-* read IR input, pass through chanl to other code
-* jquery to make ajax requests
+* Overview
+This is a hobby project to use a mini-projector with my eeepc to ease
+DND bookkeepping.
+
+This will be controlled via an old TV remote, and displayed via
+a web browser.
+* web UI
+Uses jquery to fetch the latest IR command, with the HTTP request
+blocking until we get input.
+** combat tracker
+** post-combat stats display
+
+* Nicer arduino packaging
+The current breadboard wire madness isn't practical, would need to be
+cleaned up and made more robust before it'll survive tableside.
+* DONE IR input
+Most of this is completed in my arduino-experiments repo.
