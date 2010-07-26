@@ -19,12 +19,15 @@
 		  tal-env
 		  *tal-generator*))))
 
-(hunchentoot:define-easy-handler (x10 :uri "/home") ()
+(hunchentoot:define-easy-handler (home :uri "/home") ()
   (hunchentoot:start-session)
   (render-tal "home.tal"))
+
+(hunchentoot:define-easy-handler (combat :uri "/combat") ()
+  (render-tal "combat.tal"))
+
 
 (hunchentoot:define-easy-handler (ir-commands :uri "/ir.json") ()
   (let ((key (chanl:recv *incoming-ir-channel*)))
     (json:encode-json-to-string
-     (list (cons :key key)))
-    ))
+     (list (cons :key key)))))

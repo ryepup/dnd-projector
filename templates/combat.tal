@@ -6,10 +6,10 @@
   <param:subtitle>DND Projector</param:subtitle>
   <param:title>DND Projector</param:title>
   <param:header>
-	<script src="s/home.js"></script>
+	<script src="s/combat.js"></script>
   </param:header>
   <param:content>
 	<div id="ir-input">IR input</div>
-	Press enter to start a fight.
+	<ol id="combatants"/>
   </param:content>
 </tal:include>

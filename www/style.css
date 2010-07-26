@@ -50,3 +50,32 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+
+/**********************************/
+
+#combatants{
+    margin: 5px;
+}
+
+#combatants li{
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: 1px solid #000;
+    padding:10px;
+    margin: 5px 0;
+}
+
+#combatants li.highlighted{
+    border-width: 5px;
+    border-color: blue;
+}
+
+#combatants li.selected{
+    background: -moz-linear-gradient(left,  #fff,  #afa);
+}
+
+#combatants.moving li.highlighted{
+    border-style:dashed;
+}

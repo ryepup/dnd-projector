@@ -9,6 +9,13 @@ a web browser.
 Uses jquery to fetch the latest IR command, with the HTTP request
 blocking until we get input.
 ** combat tracker
+*** DONE enter to begin
+*** DONE list of combatants, up/down to select
+*** add a new opponent
+*** remove an opponent
+*** cycle through a round
+*** record damage
+*** move player order
 ** post-combat stats display
 
 * Nicer arduino packaging
