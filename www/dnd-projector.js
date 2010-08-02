@@ -1,23 +1,28 @@
-var dnd = {
-    commands:{}
-};
-
-dnd.processIR = function(data){
-    $('#ir-input').effect('bounce', {}, 100).html(data.key);
-    
-    try{
-	dnd.commands[data.key]();	
-    } catch (x) {
-	console.log('Bad command for', data.key, x);
-    }
-};
+var dnd = {};
 
 dnd.monitorIR = function(){
     $.getJSON('ir.json', function(data){
-		  dnd.processIR(data);
+		  try{
+		      console.log('IR:', data);
+		      $(dnd.doc).trigger('ir-input', data.key)
+			  .trigger(data.key);
+
+		  } catch (x) {
+		      console.log('Error:', data, x);
+		  }
 		  dnd.monitorIR();
 	      });
 };
 
+dnd.initialize = function(){
+    dnd.doc = document;
 
-$(dnd.monitorIR);
+    $(dnd.doc).bind('ir-input', function(evt, key){
+		    $('#ir-input').html(key);
+		});
+
+    dnd.monitorIR();
+    
+};
+
+$(dnd.initialize);

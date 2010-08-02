@@ -1,5 +1,5 @@
 $(function(){
-      dnd.commands['enter'] = function(){
+      $(dnd.doc).bind('enter', function(){
 	  window.location.href="combat";
-      };
+      });
   });
