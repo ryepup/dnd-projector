@@ -25,11 +25,11 @@
     (if (eq :power key) nil
 	(progn
 	  (chanl:send *incoming-ir-channel* key)
+	  (sleep .175)
 	  T))))
 
 (defun read-ir-commands ()
   (let ((ar (make-instance 'cl-arduino:arduino)))
     (iter (for code = (cl-arduino:ir-read ar 7))
-	  (while (process-code code))
-	  (sleep .2))
+	  (while (process-code code)))
     (cl-arduino:disconnect ar)))
