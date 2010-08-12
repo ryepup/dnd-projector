@@ -1,5 +1,8 @@
 $(function(){
-      $(dnd.doc).bind('enter', function(){
-	  window.location.href="combat";
-      });
+      dnd.activateCommands(
+	  {
+	      enter:function(){
+		  window.location.href="combat";
+	      }  
+	  });
   });
