@@ -5,12 +5,17 @@ var dnd = {
 	    dnd.commandsName = newCommands._name;
 	$.extend(dnd.commands, newCommands);
     },
+    cmd:function(thing){	
+	if($.isFunction(thing)) return thing;
+	return dnd.commands[thing];
+    },
     input:function(key){
 	if (key) {
 	    $('#ir-input').html(key);
 	    try{
 		console.log('input:', key);
-		dnd.commands[key](key);	    
+		dnd.commands[key](key);
+		$(document).trigger('ir-input', key);
 	    } catch (x) {
 		console.log('Error:', key, x);
 	    }
@@ -35,7 +40,10 @@ dnd.initialize = function(){
 	37:'left',
 	39:'right',
 	32:'select',
-	109:'mute'
+	109:'mute',
+	44:'adjust-left',
+	46:'adjust-right',
+	97:'add-erase'
     };
     $(document).keypress(
 	function(evt)

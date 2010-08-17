@@ -5,8 +5,9 @@
    xmlns:param="http://common-lisp.net/project/bese/tal/params">
   <param:subtitle>DND Projector</param:subtitle>
   <param:title>DND Projector</param:title>
-  <param:header>
-	<script src="s/combat.js"></script>
+  <param:header>   
+	<script src="s/combat.js" type="text/javascript"></script>
+	<script src="s/jquery.scrollTo-1.4.2-min.js" type="text/javascript"></script>
   </param:header>
   <param:content>
 	<div id="ir-input">IR input</div>
