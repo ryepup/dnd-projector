@@ -22,3 +22,7 @@
 div#main-body {height:460px;overflow-y:auto;}
 
 dd,dt {float:left; margin:0 0.7em;}
+
+.damage {float:right;}
+
+.hurt {background-color:#FEE;}

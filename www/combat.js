@@ -18,9 +18,12 @@ dnd.combat = {
     monsterCount:1,
     addPlayer:function(name){
 	var dom = $("<li/>")
-	    .data('playerData', {name:name, rounds:0, damage:0})
+	    .data('playerData', {name:name, damage:0})
 	    .html(name)
 	    .attr('id', name);
+	var dmg = $('<span class="damage"/>').text("0");
+	dom.append(dmg);
+	dom.append('<div style="clear:both;"/>');
 	$('#combatants').append(dom);
     },
     round:function(num){
@@ -47,6 +50,18 @@ dnd.combat.activeCombatCommands = {
     },
     power:function(key){
 	//confirmation dialog, end combat, show stats screen
+    },
+    recall:function(key){
+	var dom = $('#combatants li.highlighted');
+	var player = dom.data('playerData');
+	dnd.get_number('How much damage?', function(dmg){
+			   player.damage += dmg;
+			   dom.data('playerData', player);
+			   $('.damage', dom).text(player.damage);
+			   dom.animate({backgroundColor:'#ff7777'}, 100);
+			   dom.animate({backgroundColor:'#ffffff'}, 3000);
+			   
+		       });
     }
 };
 
@@ -74,8 +89,7 @@ dnd.combat.standardCommands = {
 	    dnd.selectedPlayer = null;
 	}else{
 	    dnd.selectedPlayer = dnd.highlightedPlayer;
-	    $('#combatants li:eq('+dnd.highlightedPlayer+')')
-		.addClass('selected');
+	    $('#combatants li.highlighted').addClass('selected');
 	}
     },
     power:function(key){
@@ -111,24 +125,11 @@ dnd.combat.standardCommands = {
     'add-erase':function(key){
 	// if someone is selected and highlighted, prompt for their deletion
 	if(dnd.selectedPlayer == dnd.highlightedPlayer){
-	    var cleanUp = function(){
-		confirmDom.dialog('close');
-		dnd.exitMode();
-	    };
-	    dnd.enterMode({
-			      enter:function(key){
-				  cleanUp();
-				  //remove the actual player
-				  $('#combatants li:eq('+dnd.highlightedPlayer+')').detach();
-				  dnd.selectedPlayer=null;
-				  dnd.cmd('up')(key);
-			      },
-			      '*':cleanUp
-			  }, {inheritCommands:false});
-
-	    var confirmDom = $('<div/>').html('Press enter to delete this player.');
-	    confirmDom.dialog({modal:true});
-	    
+	    dnd.confirm('Press enter to delete this player', function(key){
+			    $('#combatants .selected').detach();
+			    dnd.selectedPlayer=null;
+			    dnd.cmd('up')(key); 
+			});
 	}else{
 	    // otherwise, add a new player
 	    var name = "monster"+dnd.combat.monsterCount;

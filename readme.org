@@ -37,9 +37,11 @@
     player
 **** DONE Add round number and game time to top of page
      CLOCK: [2010-08-28 Sat 15:17]--[2010-08-28 Sat 15:17] =>  0:00
-*** record damage
+*** DONE record damage
+    CLOCK: [2010-08-28 Sat 17:48]--[2010-08-28 Sat 18:27] =>  0:39
 
-    Highlight a player, hit recall, enter numeric damage, (left is backspace,  enter is done)
+    Highlight a player, hit recall, enter numeric damage, (left is
+    backspace, enter is done)
 
 *** DONE move player order
 
@@ -58,7 +60,16 @@
 ** DONE use a stack for the UI commands, so we pass the input processor through contexts, and can push/pop
    CLOCK: [2010-08-28 Sat 17:01]--[2010-08-28 Sat 17:32] =>  0:31
 ** make jquery plugin for player UI so it is easy to update and extend
+** separate selected from the current players turn
+
+   so you could select many people then give one damage, or have a
+   per-player timer
 ** package up the page state such that the recall button can be undo
 *** keep a list of game states, have a 'render state' function?
     sounds like work, maybe localStorage?
-** add convenience function for 'press enter' dialog
+*** keep a stack of functions to run to undo stuff?
+** DONE add convenience function for 'press enter' dialog
+   CLOCK: [2010-08-28 Sat 17:36]--[2010-08-28 Sat 17:43] =>  0:07
+
+* bugs
+** selected/highlighted weirdness with the mute button and allocating damage

@@ -30,7 +30,7 @@ var dnd = {
     },
 
     input:function(key){
-	if (key) {
+	if (key !== null) {
 	    $('#ir-input').html(key);
 	    try{
 		dnd.cmd(key)(key);
@@ -48,10 +48,70 @@ var dnd = {
 		  });
     },
 
+    confirm : function(message, action){
+	var confirmDom = $('<div/>').html(message);
+	var cleanUp = function(){
+	    confirmDom.dialog('close');
+	    dnd.exitMode();
+	};
+	dnd.enterMode({
+			  enter:function(key){
+			      cleanUp();
+			      action(key);
+			  },
+			  '*':cleanUp
+		      }, {inheritCommands:false});
+	
+	confirmDom.dialog({modal:true});
+    },
+
+    get_number : function(message, action){
+	
+	var confirmDom = $('<div/>').html(message);
+	var number = $('<h3/>');
+	confirmDom.append(number);
+	
+	var result = 0;
+	var last = "0";
+	var add = function(key){
+	    last = number.text();
+	    result = parseInt(last + key);
+	    number.text(result);
+	};
+	var cleanUp = function(){
+	    confirmDom.dialog('close');
+	    dnd.exitMode();
+	};
+	dnd.enterMode({
+			  enter:function(key){
+			      cleanUp();
+			      action(result);
+			  },
+			  left:function(key){
+			      number.text(last);
+			  },
+			  0:add,1:add,2:add,3:add,4:add,5:add,6:add,7:add,8:add,9:add,
+			  '*':cleanUp
+		      }, {inheritCommands:false});
+	
+	confirmDom.dialog({modal:true});
+    },
+
+
     initialize : function(){
 
 	// map keyboard events to IR commands to ease testing
 	var keyboardMap = {
+	    48:0,
+	    49:1,
+	    50:2,
+	    51:3,
+	    52:4,
+	    53:5,
+	    54:6,
+	    55:7,
+	    56:8,
+	    57:9,
 	    13:'enter',
 	    38:'up',
 	    40:'down',
@@ -62,13 +122,14 @@ var dnd = {
 	    44:'adjust-left', //<
 	    46:'adjust-right', //>
 	    97:'add-erase', //a
-	    112:'power' //p
+	    112:'power', //p
+	    114:'recall' //r
 	};
 	$(document).keypress(
 	    function(evt) {
 		var mappedInput = keyboardMap[evt.keyCode] ||
 		    keyboardMap[evt.which];
-		if(mappedInput)
+		if(mappedInput !== null)
 		    dnd.input(mappedInput);
 		else
 		    console.log('unmapped keypress:', evt.keyCode, evt.which);
