@@ -55,7 +55,8 @@
   Most of this is completed in my arduino-experiments repo.
 
 * architectury stuff
-** use a stack for the UI commands, so we pass the input processor through contexts, and can push/pop
+** DONE use a stack for the UI commands, so we pass the input processor through contexts, and can push/pop
+   CLOCK: [2010-08-28 Sat 17:01]--[2010-08-28 Sat 17:32] =>  0:31
 ** make jquery plugin for player UI so it is easy to update and extend
 ** package up the page state such that the recall button can be undo
 *** keep a list of game states, have a 'render state' function?

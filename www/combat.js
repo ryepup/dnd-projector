@@ -51,7 +51,6 @@ dnd.combat.activeCombatCommands = {
 };
 
 dnd.combat.standardCommands = {
-    _name : "combat",
     focusMoved:function(index){
 	$('#combatants li.highlighted').removeClass('highlighted');
 	$('#combatants li:eq('+index+')').addClass('highlighted');
@@ -100,7 +99,7 @@ dnd.combat.standardCommands = {
 		}
 	    },1000);
 
-	dnd.activateCommands(dnd.combat.activeCombatCommands);
+	dnd.enterMode(dnd.combat.activeCombatCommands);
 	$('#intro').slideUp(function(){$('#combat-summary').slideDown();});
     },
     'adjust-left':function(key){
@@ -112,25 +111,22 @@ dnd.combat.standardCommands = {
     'add-erase':function(key){
 	// if someone is selected and highlighted, prompt for their deletion
 	if(dnd.selectedPlayer == dnd.highlightedPlayer){
-	    var enterfn = dnd.cmd('enter');
-	    dnd.commands['enter'] = function(key){
-		//remove the actual player
-		$('#combatants li:eq('+dnd.highlightedPlayer+')').detach();
-		dnd.selectedPlayer=null;
-		dnd.cmd('up')('up');
+	    var cleanUp = function(){
+		confirmDom.dialog('close');
+		dnd.exitMode();
 	    };
+	    dnd.enterMode({
+			      enter:function(key){
+				  cleanUp();
+				  //remove the actual player
+				  $('#combatants li:eq('+dnd.highlightedPlayer+')').detach();
+				  dnd.selectedPlayer=null;
+				  dnd.cmd('up')(key);
+			      },
+			      '*':cleanUp
+			  }, {inheritCommands:false});
+
 	    var confirmDom = $('<div/>').html('Press enter to delete this player.');
-	    // hack alert: the event fires after this function is called, so we want to
-	    // delay hooking the event for a little bit so the current
-	    // run doesn't dismiss the dialog
-	    setTimeout(function(){
-			   $(document).bind('ir-input.confirm', function(){
-						confirmDom.dialog('close');
-						dnd.commands['enter'] = enterfn;
-						$(document).unbind('ir-input.confirm');
-					    });
-			   
-		       }, 100);
 	    confirmDom.dialog({modal:true});
 	    
 	}else{
@@ -144,7 +140,6 @@ dnd.combat.standardCommands = {
 };
 
 dnd.combat.movingCommands = {
-    _name : "moving",
     focusMoved:function(index){
 	var pl = $('#combatants li.highlighted').detach();
 	if(index == 0){
@@ -161,7 +156,7 @@ dnd.combat.movingCommands = {
 
 $(function(){
 
-      dnd.activateCommands(dnd.combat.standardCommands);
+      dnd.enterMode(dnd.combat.standardCommands);
       //load up the standard party
       $.each(dnd.standardParty, function(index, name){
 		 dnd.combat.addPlayer(name);
