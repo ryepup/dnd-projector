@@ -20,3 +20,5 @@
 
 #combatants.moving li.highlighted {border-style:dashed;}
 div#main-body {height:460px;overflow-y:auto;}
+
+dd,dt {float:left; margin:0 0.7em;}

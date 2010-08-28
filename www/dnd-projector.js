@@ -39,11 +39,12 @@ dnd.initialize = function(){
 	40:'down',
 	37:'left',
 	39:'right',
-	32:'select',
-	109:'mute',
-	44:'adjust-left',
-	46:'adjust-right',
-	97:'add-erase'
+	32:'select', //space
+	109:'mute', //m
+	44:'adjust-left', //<
+	46:'adjust-right', //>
+	97:'add-erase', //a
+	112:'power' //p
     };
     $(document).keypress(
 	function(evt)

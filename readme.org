@@ -1,25 +1,63 @@
 
 * Overview
-This is a hobby project to use a mini-projector with my eeepc to ease
-DND bookkeepping.
 
-This will be controlled via an old TV remote, and displayed via
-a web browser.
+  This is a hobby project to use a mini-projector with my eeepc to
+  ease DND bookkeepping.
+
+  This will be controlled via an old TV remote, and displayed via a
+  web browser.
+
 * web UI
-Uses jquery to fetch the latest IR command, with the HTTP request
-blocking until we get input.
+
+  Uses jquery to fetch the latest IR command, with the HTTP request
+  blocking until we get input.
+
 ** combat tracker
 *** DONE enter to begin
 *** DONE list of combatants, up/down to select
-*** add a new opponent
-*** remove an opponent
-*** cycle through a round
-*** record damage
-*** move player order
-** post-combat stats display
+*** DONE add a new opponent
 
+    Press the add/erase button
+
+*** DONE remove an opponent
+
+    Select a player, press add/erase, press enter to confirm
+
+*** DONE officially start the combat
+    CLOCK: [2010-08-28 Sat 15:17]--[2010-08-28 Sat 16:53] =>  1:36
+
+    Hit power to:
+    1. select the first player
+    2. start a timer showing how long the combat has lasted
+
+*** DONE cycle through a round
+    CLOCK: [2010-08-28 Sat 14:46]--[2010-08-28 Sat 15:04] =>  0:18
+
+    Hit mute to say that player's turn is done, highlight the next
+    player
+**** DONE Add round number and game time to top of page
+     CLOCK: [2010-08-28 Sat 15:17]--[2010-08-28 Sat 15:17] =>  0:00
+*** record damage
+
+    Highlight a player, hit recall, enter numeric damage, (left is backspace,  enter is done)
+
+*** DONE move player order
+
+    Adjust left/right buttons
+** post-combat stats display
 * Nicer arduino packaging
-The current breadboard wire madness isn't practical, would need to be
-cleaned up and made more robust before it'll survive tableside.
+
+  The current breadboard wire madness isn't practical, would need to
+  be cleaned up and made more robust before it'll survive tableside.
+
 * DONE IR input
-Most of this is completed in my arduino-experiments repo.
+
+  Most of this is completed in my arduino-experiments repo.
+
+* architectury stuff
+** use a stack for the UI commands, so we pass the input processor through contexts, and can push/pop
+** make jquery plugin for player UI so it is easy to update and extend
+** package up the page state such that the recall button can be undo
+*** keep a list of game states, have a 'render state' function?
+    sounds like work, maybe localStorage?
+** add convenience function for 'press enter' dialog

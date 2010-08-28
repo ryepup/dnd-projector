@@ -1,9 +1,52 @@
 dnd.standardParty = ["Ryepup", "Ammonia", "Ecthellion", "Tibbar", "Jack"];
+dnd.formatTime = function(sec){
+    seconds = sec % 60;
+    mins = Math.floor((sec % 3600) / 60);
+    hours = Math.floor(sec/3600);
+
+    if (seconds < 10) seconds = '0'+seconds;
+    if (mins < 10) mins = '0'+mins;
+
+    if(hours > 0){
+	return hours + ":" + mins + 'm';
+    }else{
+	return mins + ':' + seconds + 's';
+    }
+};
 
 dnd.combat = {
     monsterCount:1,
     addPlayer:function(name){
-	$('#combatants').append($("<li/>").html(name).attr('id', name));
+	var dom = $("<li/>")
+	    .data('playerData', {name:name, rounds:0, damage:0})
+	    .html(name)
+	    .attr('id', name);
+	$('#combatants').append(dom);
+    },
+    round:function(num){
+	if(arguments.length == 0){
+	    return dnd.combat._round;
+	}
+	dnd.combat._round = num;
+	$('#round').html(num);
+	$('#game-time').html(dnd.formatTime(num*6));
+	return num;
+    }
+};
+
+dnd.combat.activeCombatCommands = {
+    mute:function(key){
+	//Hit mute to say that player's turn is done, selected the next
+	//player
+	dnd.cmd('down')(key);
+	dnd.cmd('select')(key);
+	var dom = $('#combatants li.selected');
+	if(dom.index() == 0){
+	    dnd.combat.round(dnd.combat.round()+1);
+	}
+    },
+    power:function(key){
+	//confirmation dialog, end combat, show stats screen
     }
 };
 
@@ -36,14 +79,29 @@ dnd.combat.standardCommands = {
 		.addClass('selected');
 	}
     },
-    mute:function(key){
-	$('#combatants').toggleClass('moving');
-	if(dnd.commandsName == dnd.combat.movingCommands._name){
-	    dnd.activateCommands(dnd.combat.standardCommands);
-	}else{
-	    dnd.activateCommands(dnd.combat.movingCommands);
+    power:function(key){
+	//start round/real timers
+	dnd.cmd('focusMoved')(0);
+	dnd.cmd('select')(key);
+	dnd.combat.startTime = new Date();
+	dnd.combat.round(1);
+	var updateTime = function(){
+	    var secs = Math.floor((new Date() - dnd.combat.startTime)/1000);
+	    $('#real-time').html(dnd.formatTime(secs));
+	    return secs;
+	};
 	    
-	}
+	dnd.combat.realTimer = setInterval(
+	    function(){
+		var secs = updateTime();
+		if (secs > 3600){
+		    clearInterval(dnd.combat.realTimer);
+		    dnd.combat.realTimer = setInterval(updateTime, 60000);
+		}
+	    },1000);
+
+	dnd.activateCommands(dnd.combat.activeCombatCommands);
+	$('#intro').slideUp(function(){$('#combat-summary').slideDown();});
     },
     'adjust-left':function(key){
 	dnd.cmd('up')(key, dnd.combat.movingCommands.focusMoved);
