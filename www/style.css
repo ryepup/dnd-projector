@@ -16,7 +16,7 @@
 
 #combatants li.highlighted {border-width: 5px; border-color: blue;}
 
-#combatants li.selected {background: -moz-linear-gradient(left,  #fff,  #afa);}
+#combatants li.selected {background: -moz-linear-gradient(left,  #fff,  #4f4);}
 
 #combatants.moving li.highlighted {border-style:dashed;}
 div#main-body {height:460px;overflow-y:auto;}

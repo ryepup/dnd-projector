@@ -47,7 +47,7 @@
 
     Adjust left/right buttons
 *** tag the current player so mute proceeds as normal if you skip around and assign damage to other players
-*** make the selected style more prominent, doesn't show up on projector well
+*** DONE make the selected style more prominent, doesn't show up on projector well
 ** post-combat stats display
 * Nicer arduino packaging
 
