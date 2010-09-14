@@ -14,9 +14,13 @@
     margin: 5px 0;
 }
 
-#combatants li.highlighted {border-width: 5px; border-color: blue;}
+#combatants li.highlighted {border-color: blue;}
+#combatants li.hostile.highlighted {border-color: red;}
+
 
 #combatants li.selected {background: -moz-linear-gradient(left,  #fff,  #4f4);}
+#combatants li.hostile.selected {background: -moz-linear-gradient(left,  #fcc,  #4f4);}
+
 
 #combatants.moving li.highlighted {border-style:dashed;}
 div#main-body {height:460px;overflow-y:auto;}
@@ -26,3 +30,5 @@ dd,dt {float:left; margin:0 0.7em;}
 .damage {float:right;}
 
 .hurt {background-color:#FEE;}
+
+li.hostile {background-color:#fcc; border-color:#faa;}

@@ -16,11 +16,14 @@ dnd.formatTime = function(sec){
 
 dnd.combat = {
     monsterCount:1,
-    addPlayer:function(name){
+    addPlayer:function(name, hostile){
 	var dom = $("<li/>")
 	    .data('playerData', {name:name, damage:0})
 	    .html(name)
 	    .attr('id', name);
+	if (hostile){
+	    dom.addClass('hostile');
+	}
 	var dmg = $('<span class="damage"/>').text("0");
 	dom.append(dmg);
 	dom.append('<div style="clear:both;"/>');
@@ -132,9 +135,9 @@ dnd.combat.standardCommands = {
 			});
 	}else{
 	    // otherwise, add a new player
-	    var name = "monster"+dnd.combat.monsterCount;
+	    var name = prompt('monster');//"monster"+dnd.combat.monsterCount;
 	    dnd.combat.monsterCount += 1;
-	    dnd.combat.addPlayer(name);
+	    dnd.combat.addPlayer(name, true);
 	    dnd.cmd('focusMoved')($('#'+name).index());
 	}
     }

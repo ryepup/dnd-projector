@@ -82,6 +82,11 @@ var dnd = {
 	    confirmDom.dialog('close');
 	    dnd.exitMode();
 	};
+	var invertSign = function(){
+	    last = number.text();
+	    result = parseInt(last);
+	    number.text(-1*result);	    
+	};
 	dnd.enterMode({
 			  enter:function(key){
 			      cleanUp();
@@ -90,6 +95,7 @@ var dnd = {
 			  left:function(key){
 			      number.text(last);
 			  },
+			  'select':invertSign,
 			  0:add,1:add,2:add,3:add,4:add,5:add,6:add,7:add,8:add,9:add,
 			  '*':cleanUp
 		      }, {inheritCommands:false});
