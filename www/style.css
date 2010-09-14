@@ -14,15 +14,13 @@
     margin: 5px 0;
 }
 
-#combatants li.highlighted {border-color: blue;}
+#combatants li.highlighted {border-color: blue; border-style:dotted;}
 #combatants li.hostile.highlighted {border-color: red;}
 
 
 #combatants li.selected {background: -moz-linear-gradient(left,  #fff,  #4f4);}
 #combatants li.hostile.selected {background: -moz-linear-gradient(left,  #fcc,  #4f4);}
 
-
-#combatants.moving li.highlighted {border-style:dashed;}
 div#main-body {height:460px;overflow-y:auto;}
 
 dd,dt {float:left; margin:0 0.7em;}
@@ -32,3 +30,9 @@ dd,dt {float:left; margin:0 0.7em;}
 .hurt {background-color:#FEE;}
 
 li.hostile {background-color:#fcc; border-color:#faa;}
+
+li.active {margin-left:2em !important;}
+
+li.bloody * {background: -moz-linear-gradient(top,  #fff,  #f00);}
+
+.player-name {padding-right:100px;}

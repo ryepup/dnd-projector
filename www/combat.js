@@ -19,8 +19,9 @@ dnd.combat = {
     addPlayer:function(name, hostile){
 	var dom = $("<li/>")
 	    .data('playerData', {name:name, damage:0})
-	    .html(name)
-	    .attr('id', name);
+	    .attr('id', name)
+	    .append($('<span class="player-name">').html(name));
+	    
 	if (hostile){
 	    dom.addClass('hostile');
 	}
@@ -41,11 +42,17 @@ dnd.combat = {
 };
 
 dnd.combat.activeCombatCommands = {
+    bloody:function(key){
+	var dom = $('#combatants li.highlighted');
+	dom.toggleClass('bloody');
+    },
     mute:function(key){
 	//Hit mute to say that player's turn is done, selected the next
 	//player
+	$('#combatants li.active').removeClass('active');
+	dnd.cmd('focusMoved')(dnd.activePlayer);
 	dnd.cmd('down')(key);
-	dnd.cmd('select')(key);
+	dnd.cmd('select')(key, true);
 	var dom = $('#combatants li.selected');
 	if(dom.index() == 0){
 	    dnd.combat.round(dnd.combat.round()+1);
@@ -85,20 +92,24 @@ dnd.combat.standardCommands = {
 	if(newIndex < 0) newIndex = $('#combatants li').length - 1;
 	dnd.cmd(focusMovedFn || 'focusMoved')(newIndex);
     },
-    select:function(key){
+    select:function(key, makeActive){
 	$('#combatants li.selected').removeClass('selected');
 
 	if(dnd.selectedPlayer == dnd.highlightedPlayer){
 	    dnd.selectedPlayer = null;
 	}else{
 	    dnd.selectedPlayer = dnd.highlightedPlayer;
+	    if (makeActive){
+		dnd.activePlayer = dnd.selectedPlayer;
+		$('#combatants li.highlighted').addClass('active');
+	    }
 	    $('#combatants li.highlighted').addClass('selected');
 	}
     },
     power:function(key){
 	//start round/real timers
 	dnd.cmd('focusMoved')(0);
-	dnd.cmd('select')(key);
+	dnd.cmd('select')(key, true);
 	dnd.combat.startTime = new Date();
 	dnd.combat.round(1);
 	var updateTime = function(){

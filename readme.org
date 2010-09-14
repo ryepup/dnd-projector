@@ -46,11 +46,13 @@
 *** DONE move player order
 
     Adjust left/right buttons
-*** tag the current player so mute proceeds as normal if you skip around and assign damage to other players
+*** DONE tag the current player so mute proceeds as normal if you skip around and assign damage to other players
+    CLOCK: [2010-09-14 Tue 18:18]--[2010-09-14 Tue 18:28] =>  0:10
 *** DONE make the selected style more prominent, doesn't show up on projector well
 *** DONE make monster display differently
     CLOCK: [2010-09-14 Tue 18:04]--[2010-09-14 Tue 18:17] =>  0:13
 *** bloodied marker
+    CLOCK: [2010-09-14 Tue 18:29]--[2010-09-14 Tue 18:41] =>  0:12
 *** HP bar
 ** post-combat stats display
 * Nicer arduino packaging
