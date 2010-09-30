@@ -18,9 +18,10 @@ dnd.combat = {
     monsterCount:1,
     addPlayer:function(name, hostile){
 	var dom = $("<li/>")
-	    .data('playerData', {name:name, damage:0})
+	    .data('playerData', {name:name, damage:0, initiative:0})
 	    .attr('id', name)
-	    .append($('<span class="player-name">').html(name));
+	    .append($('<span class="player-name">').html(name))
+	    .append($('<span class="init">').html('0'));
 	    
 	if (hostile){
 	    dom.addClass('hostile');
@@ -80,7 +81,7 @@ dnd.combat.standardCommands = {
 	$('#combatants li.highlighted').removeClass('highlighted');
 	$('#combatants li:eq('+index+')').addClass('highlighted');
 	dnd.highlightedPlayer = index;
-	$('#main-body').scrollTo('.highlighted', {offset:{top:-50}});	
+	$('#cmb').scrollTo('.highlighted', {offset:{top:-20}});	
     },
     down:function(key, focusMovedFn){
 	var newIndex = (dnd.highlightedPlayer + 1) 
@@ -151,6 +152,41 @@ dnd.combat.standardCommands = {
 	    dnd.combat.addPlayer(name, true);
 	    dnd.cmd('focusMoved')($('#'+name).index());
 	}
+    },
+    'i':function(key){
+	var init = parseFloat(prompt('Initiative for this guy?'));
+	var dom = $('#combatants li.highlighted');
+	var player = dom.data('playerData');
+	player.initiative = init;
+	dom.data('playerData', player);
+	$('.init', dom).html(init);
+    },
+    'I':function(key){
+	console.log('sorting');
+	var players = $('#combatants li');
+	var initiatives = [];
+	var doms = [];
+	players.each(function(idx, item){
+			 var dom = $(item);
+			 initiatives.push(dom.data('playerData').initiative);
+			 dom.detach();
+			 doms.push(dom);
+		     });
+	initiatives.sort().reverse();
+	console.log(initiatives);
+
+	for(var i=0; i < initiatives.length; i++){
+	    var init = initiatives[i];
+	    for(var j=0; j<doms.length; j++){
+		var dom = doms[j];
+		var pi = dom.data('playerData').initiative;
+		if (init == pi){
+		    $('#combatants').append(dom);
+		}
+	    }
+	}
+	
+	
     }
 };
 
@@ -164,7 +200,7 @@ dnd.combat.movingCommands = {
 	}else{
 	    $('#combatants li:eq('+index+')').before(pl);
 	}
-	$('#main-body').scrollTo(pl, {offset:{top:-50}});
+	$('#cmb').scrollTo(pl, {offset:{top:-20}});
 	dnd.highlightedPlayer = index;
     }
 };

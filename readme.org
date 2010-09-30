@@ -54,6 +54,7 @@
 *** bloodied marker
     CLOCK: [2010-09-14 Tue 18:29]--[2010-09-14 Tue 18:41] =>  0:12
 *** HP bar
+*** initiative sorter
 ** post-combat stats display
 * Nicer arduino packaging
 

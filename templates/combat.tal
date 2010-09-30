@@ -19,7 +19,9 @@
       </dl>
       <div style="clear:both;"></div>
     </div>
+    <div id="cmb">
     <ol id="combatants"/>
+    </div>
     <div id="ir-input">IR input</div>
   </param:content>
 </tal:include>

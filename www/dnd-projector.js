@@ -130,15 +130,20 @@ var dnd = {
 	    97:'add-erase', //a
 	    112:'power', //p
 	    114:'recall', //r
-	    98:'bloody' //b
+	    98:'bloody', //b
+	    105:'i', //i
+	    73:'I'
 	};
 	$(document).keypress(
 	    function(evt) {
-//		console.log('unmapped keypress:', evt.keyCode, evt.which);
+	
 		var mappedInput = keyboardMap[evt.keyCode] ||
 		    keyboardMap[evt.which];
 		if(mappedInput !== null)
 		    dnd.input(mappedInput);
+		else{
+		    console.log('unmapped keypress:', evt.keyCode, evt.which);
+		}
 	    });
 
 	dnd.monitorIR();

@@ -1,6 +1,6 @@
 @import url('clear.css');
 @import url('ui-lightness/jquery-ui-1.8.4.custom.css');
-
+body{margin-left:5px;}
 #combatants{
     margin: 5px;
 }
@@ -10,18 +10,17 @@
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border: 5px solid #000;
-    padding:10px;
     margin: 5px 0;
+    padding:10px;
 }
 
 #combatants li.highlighted {border-color: blue; border-style:dotted;}
 #combatants li.hostile.highlighted {border-color: red;}
 
-
 #combatants li.selected {background: -moz-linear-gradient(left,  #fff,  #4f4);}
 #combatants li.hostile.selected {background: -moz-linear-gradient(left,  #fcc,  #4f4);}
 
-div#main-body {height:460px;overflow-y:auto;}
+#cmb {height:430px;overflow-y:auto;}
 
 dd,dt {float:left; margin:0 0.7em;}
 
@@ -29,10 +28,11 @@ dd,dt {float:left; margin:0 0.7em;}
 
 .hurt {background-color:#FEE;}
 
-li.hostile {background-color:#fcc; border-color:#faa;}
+li.hostile {background-color:#f88; border-color:#faa;}
 
 li.active {margin-left:2em !important;}
 
-li.bloody * {background: -moz-linear-gradient(top,  #fff,  #f00);}
-
+li.bloody .player-name {background: -moz-linear-gradient(left,  #faa,  #f00);}
 .player-name {padding-right:100px;}
+
+#combat-summary {height:20px;}
