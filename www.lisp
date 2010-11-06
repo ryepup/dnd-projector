@@ -26,8 +26,13 @@
 (hunchentoot:define-easy-handler (combat :uri "/combat") ()
   (render-tal "combat.tal"))
 
+(hunchentoot:define-easy-handler (combat-display :uri "/combat-display") ()
+  (render-tal "combat-display.tal"))
 
-(hunchentoot:define-easy-handler (ir-commands :uri "/ir.json") ()
+(hunchentoot:define-easy-handler (scribe :uri "/scribe") ()
+  (render-tal "scribe.tal"))
+
+(hunchentoot:define-easy-handler (projector :uri "/projector.json") ()
   (let ((key (chanl:recv *incoming-ir-channel*)))
     (json:encode-json-to-string
      (list (cons :key key)))))

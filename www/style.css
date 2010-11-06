@@ -1,6 +1,6 @@
 @import url('clear.css');
 @import url('ui-lightness/jquery-ui-1.8.4.custom.css');
-body{margin-left:5px;}
+body{margin-left:40px;}
 #combatants{
     margin: 5px;
 }

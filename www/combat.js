@@ -52,7 +52,7 @@ dnd.combat.activeCombatCommands = {
 	//player
 	$('#combatants li.active').removeClass('active');
 	dnd.cmd('focusMoved')(dnd.activePlayer);
-	dnd.cmd('down')(key);
+	dpnd.cmd('down')(key);
 	dnd.cmd('select')(key, true);
 	var dom = $('#combatants li.selected');
 	if(dom.index() == 0){

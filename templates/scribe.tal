@@ -1,0 +1,72 @@
+<html xmlns:tal="http://common-lisp.net/project/bese/tal/core"
+      tal:in-package=":dnd-projector">
+  <head>
+    <title>Scribe</title>
+    <script src="s/jquery.min.js"></script>
+    <script src="s/jquery-ui.min.js"></script>
+    <meta name="viewport" content="user-scalable=no, width=device-width" />
+    <script src="s/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
+    <style type="text/css" media="screen">@import "s/jqtouch/jqtouch.css";</style>
+    <style type="text/css" media="screen">@import "s/themes/jqt/theme.css";</style>
+    <script src="s/scribe.js" type="text/javascript"></script>
+    <style>
+      #addPlayerForm label {display:block; padding:1em;}
+    </style>
+
+  </head>
+  <body id="jqt">
+    <div id="players">
+      <div class="toolbar">
+	<h1>DND Combat</h1>
+	<a href="#settings" class="button slideup">Settings</a>
+      </div>
+      <div class="info">
+	round N real time X game time Y
+      </div>
+      <button>next turn</button>
+      <ul id="playerList" class="rounded"/>
+    </div>
+    <div id="playerDetail">
+      <div class="toolbar">
+	<a href="#" class="back">back</a>
+	<h1>player name</h1>
+      </div>
+      <button>hurt</button>
+      <button>heal</button>
+      <button>initiative</button>
+      <button>bloodied</button>
+      <button>DEAD</button>
+    </div>
+    <div id="settings">
+      <div class="toolbar">
+	<a href="#" class="back">back</a>
+	<h1>Settings</h1>
+      </div>
+      <ul>
+	<li onclick="scribe.jqt.goTo('#addPlayer', 'fade');" class="forward">Add Player</li>
+	<li class="arrow">Sort by initiative</li>
+      </ul>
+    </div>
+    <div id="addPlayer">
+      <div class="toolbar">
+	<a href="#" class="back">back</a>
+	<h1>Add Player</h1>
+      </div>
+      <form id="addPlayerForm">
+	<label>
+	  <h2>Name:</h2>
+	  <input type="text" name="name"/>
+	</label>
+	<label>
+	  <h2>Initiative:</h2>
+	  <input type="text" name="initiative" value="0"/>
+	</label>
+	<div style="margin-top:2em;">
+	  <a href="#" class="greenButton" id="addAlly" style="float:left;">Add Ally</a>
+	  <a href="#" class="redButton" id="addEnemy" style="float:right;">Add Enemy</a>
+	  <div style="clear:both;"></div>
+	</div>
+      </form>
+    </div>
+  </body>
+</html>

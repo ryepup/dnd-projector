@@ -146,7 +146,7 @@ var dnd = {
 		}
 	    });
 
-	dnd.monitorIR();
+//	dnd.monitorIR();
 	dnd.enterMode({'*':function(key){console.log('unbound key', key);}});    
     }
 };
