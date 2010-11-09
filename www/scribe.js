@@ -29,6 +29,30 @@ scribe.addPlayerFromForm = function(hostile){
     scribe.addPlayer(null, opts);
     //notify
     alert('done!');
+    return false;
+};
+
+scribe.editPlayer = function(player){
+    $('#editPlayer h1').text(player.name);
+    $('#initiative2').value(player.initiative);
+    if(player.bloodied){
+	$('#bloodied').value(true);
+    }
+};
+
+scribe.playerLi = function(player){
+    var li = $('<li/>');
+    var a = $('<a href="#editPlayer"/>')
+	.text(player.name)
+	.click(function(){
+		   scribe.editPlayer(player);
+	       });
+    li.append(a);
+    
+    if(player.hostile){
+	li.addClass('hostile');
+    }
+    return li;  
 };
 
 scribe.addPlayer = function(name, opts){
@@ -36,48 +60,43 @@ scribe.addPlayer = function(name, opts){
 	name:name,
 	damage:0,
 	initiative:0,
-	dom:$('<li/>'),
+	bloodied:false,
 	hostile:false
     };
 
     if (opts){
 	$.extend(player, opts);	
-    }
-
-    player.dom
-	.text(player.name)
-	.addClass('arrow')
-	.click(function(){
-		   $('#playerDetail .toolbar h1').text(player.name);
-		   scribe.jqt.goTo('#playerDetail', 'slideleft');
-	       });
+    }    
 
     scribe.players.push(player);
-    $('#playerList').append(player.dom);
+
+    $('.player-list').detach();
+    var pl = $('<ul/>').addClass('player-list');
+    $.each(scribe.players, function(idx, item){
+	       pl.append(scribe.playerLi(item));
+	   });
+    pl.listview();
     
+    $('#playerList').append(pl);
 };
 
-scribe.jqt = $.jQTouch({
-			   icon: 'jqtouch.png',
-			   statusBar: 'black-translucent',
-			   preloadImages: [
-			       'themes/jqt/img/chevron_white.png',
-			       'themes/jqt/img/bg_row_select.gif',
-			       'themes/jqt/img/back_button_clicked.png',
-			       'themes/jqt/img/button_clicked.png'
-			   ]
-		       });
+scribe.turn = function(){
+    var li = $('.player-list li:first').detach();
+    $('.player-list').append(li);
+};
 
 $(function(){
+      $('#turn').click(scribe.turn);
       $('#addAlly').click(function(){ 
-			      scribe.addPlayerFromForm(false);
+			      return scribe.addPlayerFromForm(false);
 			  });
 
       $('#addEnemy').click(function(){ 
-			      scribe.addPlayerFromForm(true);
+			      return scribe.addPlayerFromForm(true);
 			  });
       //load up the standard party
       $.each(scribe.standardParty, function(index, name){
 		 scribe.addPlayer(name);
 	     });
+
   });
