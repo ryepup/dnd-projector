@@ -55,30 +55,6 @@ scribe.playerLi = function(player){
     return li;  
 };
 
-scribe.addPlayer = function(name, opts){
-    var player = {
-	name:name,
-	damage:0,
-	initiative:0,
-	bloodied:false,
-	hostile:false
-    };
-
-    if (opts){
-	$.extend(player, opts);	
-    }    
-
-    scribe.players.push(player);
-
-    $('.player-list').detach();
-    var pl = $('<ul/>').addClass('player-list');
-    $.each(scribe.players, function(idx, item){
-	       pl.append(scribe.playerLi(item));
-	   });
-    pl.listview();
-    
-    $('#playerList').append(pl);
-};
 
 scribe.turn = function(){
     var li = $('.player-list li:first').detach();
@@ -86,17 +62,8 @@ scribe.turn = function(){
 };
 
 $(function(){
-      $('#turn').click(scribe.turn);
-      $('#addAlly').click(function(){ 
-			      return scribe.addPlayerFromForm(false);
-			  });
-
-      $('#addEnemy').click(function(){ 
-			      return scribe.addPlayerFromForm(true);
-			  });
-      //load up the standard party
-      $.each(scribe.standardParty, function(index, name){
-		 scribe.addPlayer(name);
-	     });
-
+      $('#playerList ul li a')
+	  .click(function(obj){
+		     console.log(obj);
+		 });
   });
