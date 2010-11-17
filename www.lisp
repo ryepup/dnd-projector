@@ -1,12 +1,12 @@
 (in-package :dnd-projector)
-
+(defvar *current-combat* nil)
 (defun entry-points ()
   (push
    (hunchentoot:create-folder-dispatcher-and-handler "/s/" #P"/home/ryan/clbuild/source/dnd-projector/www/")
    hunchentoot:*dispatch-table*))
 
 (defvar *tal-generator* (make-instance 'yaclml:file-system-generator
-		       :cachep nil
+		       :cachep T
 		       :root-directories (list #P"/home/ryan/clbuild/source/dnd-projector/templates/")))
 
 (defun render-tal (tal-file &optional tal-env)
@@ -47,31 +47,43 @@
 
 (hunchentoot:define-easy-handler (scribe-add :uri "/scribe-add") (name initiative hostile-p)
   (add-player name
-	      (parse-integer initiative)
 	      (string-equal hostile-p "T")
+	      (parse-integer initiative)
 	      *current-combat*)
   (hunchentoot:redirect "/scribe#addPlayer"))
 
 (hunchentoot:define-easy-handler (scribe-sort :uri "/scribe-sort") ()
-  (setf (players *current-combat*)
-	(sort (players *current-combat*) #'> :key #'initiative))
+  (sort-players)
   (hunchentoot:redirect "/scribe"))
+
+(defun sort-players ()
+  (setf (players *current-combat*)
+	(sort (players *current-combat*) #'> :key #'initiative)))
 
 (hunchentoot:define-easy-handler (scribe-turn :uri "/scribe-turn") ()
-  (let ((pl (pop (players *current-combat*))))
-    (setf (players *current-combat*)
-	  (append (players *current-combat*) (list pl))))
+  (turn)
   (hunchentoot:redirect "/scribe"))
 
+(defun turn ()
+  (let ((pl (pop (players *current-combat*))))
+    (setf (players *current-combat*)
+	  (append (players *current-combat*) (list pl)))))
 
 (hunchentoot:define-easy-handler (scribe-edit :uri "/scribe-edit") (id)
-  (let ((player (find (parse-integer id) (players *current-combat*) :key #'id)))
-    (render-tal "edit-player.tal" (yaclml:tal-env 'id (id player)
-						  'name (name player)
-						  'bloodied (if (bloodied-p player)
-								"checked"
-								"")
-						  'initiative (initiative player)))))
+  (let ((player (player-by-id *current-combat* id)))
+     (render-tal "edit-player.tal"
+		 (yaclml:tal-env 'id (id player)
+				 'name (name player)
+				 'bloodied (if (bloodied-p player)
+					       "unbloody"
+					       "bloody")
+				 'initiative (initiative player)))
+ ))
+
+(hunchentoot:define-easy-handler (scribe-bloody :uri "/scribe-bloody") (id)
+  (let ((player (player-by-id *current-combat* id)))
+    (setf (bloodied-p player) (not (bloodied-p player)))
+    (hunchentoot:redirect "/scribe")))
 
 (hunchentoot:define-easy-handler (scribe-kill :uri "/scribe-kill") (id)
   (setf (players *current-combat*)
@@ -79,22 +91,29 @@
 		:key #'id))
   (hunchentoot:redirect "/scribe"))
 
-(hunchentoot:define-easy-handler (scribe-save :uri "/scribe-save") (id damage healing new-initiative bloodiedp)
+(hunchentoot:define-easy-handler (scribe-save :uri "/scribe-save") (id damage healing new-initiative)
   (let ((player  (player-by-id *current-combat* id))
 	(dmg (- (parse-integer damage)
 		(parse-integer healing)))
-	(init (parse-integer new-initiative))
-	(bloodied-p (and bloodiedp (string-equal "T" bloodiedp))))
+	(init (parse-integer new-initiative)))
     (incf (damage player) dmg)
     (setf (initiative player) init
-	  (bloodied-p player) bloodied-p
 	  (damage player) (max 0 (damage player)))
     (hunchentoot:redirect "/scribe")))
 
-(hunchentoot:define-easy-handler (projector :uri "/projector.json") ())
+(hunchentoot:define-easy-handler (projector :uri "/projector") ()
+  (render-tal "projector.tal" (yaclml:tal-env 'players
+				    (iter
+				      (for p in (players *current-combat*))
+				      (collect (yaclml:tal-env
+					      'name (name p)
+					      'initiative (initiative p)
+					      'bloody (if (bloodied-p p) "bloody" "")
+					      'css-class (if (hostile-p p) "hostile" "")
+					      'damage (damage p)))))))
 
 
-(defvar *current-combat* nil)
+
 (defclass combat ()
   ((players :accessor players :initform (list))
    (max-id :accessor max-id :initform 0)))
@@ -106,14 +125,33 @@
 (defclass player ()
   ((name :accessor name :initarg :name)
    (initiative :accessor initiative :initarg :initiative :initform 0)
-   (bloodied-p :accessor bloodied-p :initform nil)
+   (bloodied-p :accessor bloodied-p :initform nil :initarg :bloodied-p)
    (hostile-p :accessor hostile-p :initarg :hostile-p :initform nil)
    (damage :accessor damage :initform 0)
    (id :accessor id :initarg :id)))
 
-(defun add-player (name initiative hostile-p combat)
-  (push (make-instance 'player :name name
+(defun add-player (name &optional (hostile-p T) (initiative 0) (combat *current-combat*) (bloodied-p nil))
+  (let ((p (make-instance 'player :name name
 		       :initiative initiative
 		       :hostile-p hostile-p
-		       :id (incf (max-id combat)))
-	(players combat)))
+		       :bloodied-p bloodied-p
+		       :id (incf (max-id combat)))))
+    (push p (players combat))
+    p))
+
+(defun deserialize-combat-from-string (json)
+  (flet ((lookup (key alist) (cdr (assoc key alist))))
+    (let ((json (json:decode-json-from-string json))
+	  (c (make-combat )))
+      (setf (max-id c) (lookup :max-id json))
+      (dolist (p (lookup :players json))
+	(let ((pl (add-player (lookup :name p)
+			      (lookup :hostile-p p)
+			      (lookup :initiative p)
+			      c)))
+	  (setf (id pl) (lookup :id p))
+	  ))
+      (setf (players c) (nreverse (players c)))
+      c
+      ))
+  )

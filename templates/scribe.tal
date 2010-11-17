@@ -41,7 +41,7 @@
 	</ul>
       </div>
       <div data-role="footer">	
-	<form action="scribe-sort">
+	<form action="/scribe-sort">
 	  <input type="submit" value="Sort by initiative"/>
 	</form>
       </div>
@@ -52,7 +52,7 @@
 	<h1>Add Player</h1>
       </div>
       <div data-role="content">
-	<form id="addPlayerForm" action="scribe-add">
+	<form id="addPlayerForm" action="/scribe-add" method="post">
 	
 	  <div data-role="fieldcontain">
 	    <label for="name">Name:</label>
@@ -75,37 +75,6 @@
 	  <input type="submit" data-role="button" value="Add"/>
 
 	</form>
-      </div>
-    </div>
-    <div id="editPlayer" data-role="page">
-      <div data-role="header">
-	<h1>player name</h1>
-      </div>
-      <div data-role="content">
-	<form id="editPlayerForm" >
-	  <div data-role="fieldcontain">
-	    <label for="damage">Damage:</label>
- 	    <input type="range" name="damage" id="damage" value="0" min="0" max="200"  />
-	  </div>
-	  <div data-role="fieldcontain">
-	    <label for="healing">Healing:</label>
- 	    <input type="range" name="healing" id="healing" value="0" min="0" max="100"  />
-	  </div>
-	  <div data-role="fieldcontain">
-	    <label for="initiative2">Initiative:</label>
- 	    <input type="range" name="initiative2" id="initiative2" value="0" min="0" max="50"  />
-	  </div>
-	  <div data-role="fieldcontain">
- 	    <fieldset data-role="controlgroup">
-	      <input type="checkbox" name="bloodied" id="bloodied" class="custom" />
-	      <label for="bloodied">Bloodied</label>
-	    </fieldset>
-	  </div>
-	</form>
-      </div>
-      <div data-role="footer">
-	<button id="savePlayer" data-icon="check">Save</button>
-	<button data-icon="delete">DEAD</button>
       </div>
     </div>
   </body>
