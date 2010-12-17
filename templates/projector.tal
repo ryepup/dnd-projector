@@ -1,0 +1,49 @@
+<html xmlns:tal="http://common-lisp.net/project/bese/tal/core"
+      tal:in-package=":dnd-projector">
+  <head>
+    <title>Projector</title>
+    <meta http-equiv="refresh" content="5"/>
+    <link href="s/clear.css" rel="stylesheet"/>
+    <style>
+      body{ margin:0 30px; }
+
+      #combatants li{
+      border-radius: 5px;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      border: 1px solid #000;
+      margin: 5px 0;
+      padding:2px;
+      background-color:#8f8;
+      font-size:0.6em;
+      }
+      .hostile {color:red; background-color:#Faa !important; }
+      .bloody {border-style:dotted !important;}
+
+      #combatants li:first-child {font-size:1.5em; border-width:5px;}
+      
+      .atbat {font-size:1em !important; border-width:3px !important;}
+      .damage {float:right;}
+      .name, .init {float:left;}
+      .init {width:40px;}
+    </style>
+    <script src="s/jquery.min.js"></script>
+    <script language="javascript">
+      $(function(){
+      $('#combatants li:nth-child(2)').addClass('atbat');
+      });
+    </script>
+  </head>
+  <body>
+    <ol id="combatants">
+      <tal:tal tal:dolist="$players">
+	<li class="${$css-class} ${$bloody}">
+	  <div class="damage" tal:content="$damage"/>
+	  <div class="init" tal:content="$initiative"/>
+	  <div class="name" tal:content="$name"/>
+	  <div style="clear:both;"></div>
+	</li>
+      </tal:tal>
+    </ol>
+  </body>
+</html>
