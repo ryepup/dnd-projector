@@ -98,7 +98,7 @@
     (hunchentoot:redirect "/scribe")))
 
 (hunchentoot:define-easy-handler (scribe-kill :uri "/scribe-kill") (id)
-  (kill  (parse-integer id))
+  (kill (parse-integer id))
   (hunchentoot:redirect "/scribe"))
 
 (hunchentoot:define-easy-handler (scribe-save :uri "/scribe-save") (id damage healing new-initiative)
@@ -189,7 +189,7 @@
 (defun damagem (amt &rest ids)
   (dolist (id ids)
     (incf (damage (player-by-id *current-combat* id))
-	  amt))))
+	  amt)))
 
 (defun bloodym (bloodyp &rest ids)
   (dolist (id ids)
@@ -212,8 +212,8 @@
 
 (defmethod print-object ((instance player) stream)
   (print-unreadable-object (instance stream)
-    (with-slots (name id initiative) instance
-      (format stream "~a ~a ~a" name id initiative)))) 
+    (with-slots (name id damage initiative) instance
+      (format stream "~a | ~a ~a (~a)" name id damage initiative)))) 
 
 (defun move-up (id)
   (let* ((p (player-by-id *current-combat* id))
@@ -236,25 +236,25 @@
 	))
   )
 
-(defun move-down (id)
-  (let* ((p (player-by-id *current-combat* id))
-	 (ps (players *current-combat*))
-	 (ppos (position p ps))
-	 (before (subseq ps 0 ppos))
-	 (after (remove p (subseq ps ppos))))
+;; (defun move-down (id)
+;;   (let* ((p (player-by-id *current-combat* id))
+;; 	 (ps (players *current-combat*))
+;; 	 (ppos (position p ps))
+;; 	 (before (subseq ps 0 ppos))
+;; 	 (after (remove p (subseq ps ppos))))
  
-    (if before
-	(let ((l (last before)))
-	  (alexandria:flatten (list
-			       before
-			       (pop after)
-			       p
-			       after)))
-	(let ((l (last after)))
-	  (alexandria:flatten (list (reverse (rest (reverse after)))
-				    p
-				    l
-				    )))
+;;     (if before
+;; 	(let ((l (last before)))
+;; 	  (alexandria:flatten (list
+;; 			       before
+;; 			       (pop after)
+;; 			       p
+;; 			       after)))
+;; 	(let ((l (last after)))
+;; 	  (alexandria:flatten (list (reverse (rest (reverse after)))
+;; 				    p
+;; 				    l
+;; 				    )))
 	
-	))
-  )
+;; 	))
+;;   )
