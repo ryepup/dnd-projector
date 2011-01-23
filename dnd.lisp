@@ -33,6 +33,11 @@
 			       (cons :old (damage self))
 			       (cons :damage new-value)))))
 
+(defmethod (setf bloodied-p) :after (new-value (self player))
+  (projector-event (list :bloody
+			 (list (cons :pid (id self))
+			       (cons :bloody new-value)))))
+
 (defun ensure-combat (&optional reset)
   (when (or reset (null *current-combat*))
     (setf *current-combat* (make-combat))
@@ -68,16 +73,13 @@
 			      (lookup :hostile-p p)
 			      (lookup :initiative p)
 			      c)))
-	  (setf (id pl) (lookup :id p))
-	  ))
+	  (setf (id pl) (lookup :id p))))
       (setf (players c) (nreverse (players c)))
       c)))
 
 (defun add-player (name &optional (hostile-p T) (initiative 0) (combat *current-combat*) (bloodied-p nil))
   (let ((p (make-instance 'player :name name
-		       :initiative (typecase initiative
-				     (list (first initiative))
-				     (T initiative))
+		       :initiative initiative
 		       :hostile-p hostile-p
 		       :bloodied-p bloodied-p
 		       :id (incf (max-id combat)))))
@@ -94,10 +96,10 @@
       (add-player name T (+ int-mod (d20)))))
 
 (defun kill (&rest ids)
-  (dolist (id ids)
-    (setf (players *current-combat*)
-	  (remove id (players *current-combat*)
-		  :key #'id))))
+  (setf (players *current-combat*)
+	(remove-if (lambda (id) (member id ids))
+		   (players *current-combat*)
+		   :key #'id)))
 
 (defun damagem (amt &rest ids)
   (dolist (id ids)

@@ -14,6 +14,13 @@ var dnd = {
 	    pli.animate({opacity:.25},500)
 		.animate({opacity:1},500);
 	    $('.damage', pli).text(evtData.damage);
+	}else if(evtType == "bloody"){
+	    pli = $('li#p'+evtData.pid);
+	    if (evtData['bloody']){
+		pli.addClass('bloody');
+	    }else{
+		pli.removeClass('bloody');
+	    }
 	}else if(evtType == "reset"){
 	    dnd.getPlayers();
 	}
