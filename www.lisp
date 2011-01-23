@@ -90,10 +90,6 @@
 	  (damage player) (max 0 (damage player)))
     (hunchentoot:redirect "/scribe")))
 
-(hunchentoot:define-easy-handler (players.json :uri "/players.json") ()
-  (ensure-combat)
-  (json:encode-json-to-string (players *current-combat*)))
-
 (hunchentoot:define-easy-handler (projector :uri "/projector") ()
   (render-tal "projector.tal" (yaclml:tal-env
 			       'current-init (current-init *current-combat*)
@@ -107,6 +103,19 @@
 					      'bloody (if (bloodied-p p) "bloody" "")
 					      'css-class (if (hostile-p p) "hostile" "")
 					      'damage (damage p)))))))
+
+(hunchentoot:define-easy-handler (players.json :uri "/players.json") ()
+  (ensure-combat)
+  (json:encode-json-to-string (players *current-combat*)))
+
+(defvar *event-queue* (make-instance 'chanl:bounded-channel :size 100) "list of events")
+
+(defun projector-event (thing)
+  (chanl:send *event-queue* thing))
+
+(hunchentoot:define-easy-handler (projector.json :uri "/projector.json") ()
+  (let ((event (chanl:recv *event-queue*)))
+    (json:encode-json-to-string event)))
 
 
 ;; (defun move-down (id)

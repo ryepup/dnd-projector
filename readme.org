@@ -67,7 +67,6 @@
    projector.  Passively displays the input from the scribe UI to show
    combat in progress.
    
-
 * architectury stuff
 ** DONE use a stack for the UI commands, so we pass the input processor through contexts, and can push/pop
    CLOCK: [2010-08-28 Sat 17:01]--[2010-08-28 Sat 17:32] =>  0:31
@@ -84,9 +83,10 @@
    CLOCK: [2010-08-28 Sat 17:36]--[2010-08-28 Sat 17:43] =>  0:07
 
 ** scribe pushes events
-
 ** projector subscribes
 ** DONE nginx
    CLOCK: [2011-01-16 Sun 20:46]--[2011-01-16 Sun 23:50] =>  3:04
+** jquery event pull
+   CLOCK: [2011-01-23 Sun 10:49]
 * bugs
 ** selected/highlighted weirdness with the mute button and allocating damage
