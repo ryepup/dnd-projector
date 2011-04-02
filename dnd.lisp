@@ -29,6 +29,7 @@
 
 (defmethod (setf damage) :before (new-value (self player))
   (projector-event (list :damage
+			 
 			 (list (cons :pid (id self))
 			       (cons :old (damage self))
 			       (cons :damage new-value)))))
@@ -38,12 +39,12 @@
 			 (list (cons :pid (id self))
 			       (cons :bloody new-value)))))
 
-(defun ensure-combat (&optional reset)
+(defun ensure-combat (&optional reset (init-bonus 2))
   (when (or reset (null *current-combat*))
     (setf *current-combat* (make-combat))
     (iter (for n in '("Ryepup" "Jack" "Ecthellion" "Tibbar" "Ammonia"))
-	  (for mod in '(13 10 11 10 17))
-	  (add-player n nil (+ mod (d20)) *current-combat* nil))
+	  (for mod in '(12 9 11 9 16))
+	  (add-player n nil (+ mod (d20) init-bonus) *current-combat* nil))
     (sort-players)))
 
 (defun sort-players ()
@@ -85,14 +86,14 @@
 		       :id (incf (max-id combat)))))
     (push p (players combat))
     p))
-
+(defvar *d20-state* (make-random-state))
 (defun d20 ()
-  (1+ (random 20)))
+  (1+ (random 20 *d20-state*)))
 
-(defun add-hostiles (name int-mod &optional (n 1 nsupplied))
+(defun add-hostiles (name int-mod &key (n 1 nsupplied) (start 1))
   (if nsupplied
       (dotimes (i n)
-	(add-hostiles (format nil "~a ~a" name (1+ i)) int-mod))
+	(add-hostiles (format nil "~a ~a" name (+ start i)) int-mod))
       (add-player name T (+ int-mod (d20)))))
 
 (defun kill (&rest ids)

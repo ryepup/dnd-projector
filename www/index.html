@@ -4,8 +4,13 @@
     <title>Projector</title>
     <link href="clear.css" rel="stylesheet"/>
     <style>
-      body{ margin:0 30px; }
+      html {height:100%; margin:0; padding:0; overflow-y:hidden;}
+      body{  height:99%; margin:0; padding:0; overflow-y:hidden;
+      background: -moz-linear-gradient(top, #FFFFFF 50%, #000000 100%); /* firefox */
+      
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#FFFFFF), color-stop(100%,#000000)); /* webkit */}
 
+      #combatants { margin:0 5% 0 5%; }
       #combatants li{
       border-radius: 5px;
       -moz-border-radius: 5px;
@@ -18,7 +23,8 @@
       }
       .hostile {color:#600; background-color:#Fdd !important; }
       .bloody {border-style:dotted !important; 
-      margin-left:3em !important;}
+      margin
+-left:3em !important;}
 
       #combatants li:first-child {font-size:1.5em; border-width:5px;}
       

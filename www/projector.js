@@ -1,8 +1,14 @@
 var dnd = {
     nextEvent:function(){
 	console.log('waiting for event');
-	$.ajax({url:"projector.json", dataType:"json",
-	       success:dnd.handleEvent});
+	dnd.req = $.ajax({url:"projector.json", dataType:"json",
+			  success:dnd.handleEvent,
+			  timeout:360000,
+			  error:function(x,y,z){
+			      console.log('error',x,y,z);
+			      dnd.nextEvent();
+			  }
+			 });
     },
     handleEvent:function(dndEvent){
 	console.log('got event ', dndEvent);

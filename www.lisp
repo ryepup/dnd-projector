@@ -117,7 +117,6 @@
   (let ((event (chanl:recv *event-queue*)))
     (json:encode-json-to-string event)))
 
-
 ;; (defun move-down (id)
 ;;   (let* ((p (player-by-id *current-combat* id))
 ;; 	 (ps (players *current-combat*))
