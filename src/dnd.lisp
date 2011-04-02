@@ -4,6 +4,7 @@
 (defclass combat ()
   ((players :accessor players :initform (list))
    (max-id :accessor max-id :initform 0)
+   (hostile-count :accessor hostile-count :initform 1)
    (current-init :accessor current-init :initform 0)))
 
 (defmethod (setf players) :after (new-value (self combat))
@@ -72,7 +73,8 @@
       (setf (players c) (nreverse (players c)))
       c)))
 
-(defun add-player (name &optional (hostile-p T) (initiative 0) (combat *current-combat*) (bloodied-p nil))
+(defun add-player (name &optional (hostile-p T)
+		   (initiative 0) (combat *current-combat*) (bloodied-p nil))
   (let ((p (make-instance 'player :name name
 		       :initiative initiative
 		       :hostile-p hostile-p
@@ -84,11 +86,14 @@
 (defun d20 ()
   (1+ (random 20)))
 
-(defun add-hostiles (name int-mod &key (n 1 nsupplied) (start 1))
-  (if nsupplied
-      (dotimes (i n)
-	(add-hostiles (format nil "~a ~a" name (+ start i)) int-mod))
-      (add-player name T (+ int-mod (d20)))))
+(defun add-hostiles (name int-mod &key (n 1) (start (hostile-count *current-combat*)))
+ 
+  (dotimes (i n)
+    (add-player (format nil "~a ~a" name (+ start i))
+		T (+ int-mod (d20))))
+  (setf (hostile-count *current-combat*)
+	(+ n start))
+  )
 
 (defun kill (&rest ids)
   (setf (players *current-combat*)
@@ -102,9 +107,12 @@
 	  amt)))
 
 (defun bloodym (bloodyp &rest ids)
-  (dolist (id ids)
-    (setf (bloodied-p (player-by-id *current-combat* id))
-	  bloodyp)))
+  (iter (for id in ids)
+	(for p = (player-by-id *current-combat* id))
+	(setf (bloodied-p p)
+	      (if (eq :toggle bloodyp)
+		  (not (bloodied-p p))
+		  bloodyp))))
 
 (defgeneric rename (thing new-name)
   (:method ((id integer) name)
