@@ -1,5 +1,5 @@
 (in-package :dnd-projector)
-(defvar *current-combat* nil)
+;; This file has various definitions for players, combats, and manipulating those
 
 (defclass combat ()
   ((players :accessor players :initform (list))
@@ -29,7 +29,6 @@
 
 (defmethod (setf damage) :before (new-value (self player))
   (projector-event (list :damage
-			 
 			 (list (cons :pid (id self))
 			       (cons :old (damage self))
 			       (cons :damage new-value)))))
@@ -39,30 +38,25 @@
 			 (list (cons :pid (id self))
 			       (cons :bloody new-value)))))
 
-(defun ensure-combat (&optional reset (init-bonus 2))
-  (when (or reset (null *current-combat*))
-    (setf *current-combat* (make-combat))
-    (iter (for n in '("Ryepup" "Jack" "Ecthellion" "Tibbar" "Ammonia"))
-	  (for mod in '(12 9 11 9 16))
-	  (add-player n nil (+ mod (d20) init-bonus) *current-combat* nil))
-    (sort-players)))
+(defun sort-players (&optional (combat *current-combat*))
+  "destructively sorts the active players list"
+  (setf (players combat)
+	(sort (players combat) #'> :key #'initiative)
 
-(defun sort-players ()
-  (setf (players *current-combat*)
-	(sort (players *current-combat*) #'> :key #'initiative)
+	(current-init combat)
+	(iter (for p in (players combat))
+	      (maximize (initiative p)))))
 
-	(current-init *current-combat*) (iter (for p in (players *current-combat*))
-					      (maximize (initiative p)))))
+(defun turn (&optional (combat *current-combat*))
+  (let ((pl (pop (players combat))))
+    (setf (players combat)
+	  (append (players combat) (list pl)))))
 
-(defun turn ()
-  (let ((pl (pop (players *current-combat*))))
-    (setf (players *current-combat*)
-	  (append (players *current-combat*) (list pl)))))
-
-(defmethod player-by-id ((c combat) (id string))
-  (player-by-id c (parse-integer id)))
-(defmethod player-by-id ((c combat) (id integer))
-  (find id (players c) :key #'id))
+(defgeneric player-by-id (combat thing)
+  (:method ((c combat) (id string))
+    (player-by-id c (parse-integer id)))
+  (:method ((c combat) (id integer))
+    (find id (players c) :key #'id)))
 
 (defun deserialize-combat-from-string (json)
   (flet ((lookup (key alist) (cdr (assoc key alist))))
@@ -86,9 +80,9 @@
 		       :id (incf (max-id combat)))))
     (push p (players combat))
     p))
-(defvar *d20-state* (make-random-state))
+
 (defun d20 ()
-  (1+ (random 20 *d20-state*)))
+  (1+ (random 20)))
 
 (defun add-hostiles (name int-mod &key (n 1 nsupplied) (start 1))
   (if nsupplied

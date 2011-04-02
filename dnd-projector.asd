@@ -2,10 +2,12 @@
 
 (defsystem :dnd-projector
   :serial t
-  ;; add new files to this list:
-  :components ((:file "package")
-	       (:file "dnd")
-	       (:file "www")
-	       (:file "dnd-projector"))
+  :components
+  ((:module :src
+	    :serial t
+	    :components ((:file "package")
+			 (:file "dnd-projector")
+			 (:file "dnd")
+			 (:file "www"))))
   :depends-on (#:cl-ppcre #:chanl #:alexandria #:iterate
 			  #:hunchentoot #:cl-json))
