@@ -125,14 +125,12 @@
   (setf (initiative (player-by-id *current-combat* id))
 	new-init))
  
-
 (defun move-up (id)
   (let* ((p (player-by-id *current-combat* id))
 	 (ps (players *current-combat*))
 	 (ppos (position p ps))
 	 (before (subseq ps 0 ppos))
 	 (after (remove p (subseq ps ppos))))
- 
     (if before
 	(let ((l (last before)))
 	  (alexandria:flatten (list (reverse (rest (reverse before)))
@@ -141,11 +139,7 @@
 	(let ((l (last after)))
 	  (alexandria:flatten (list (reverse (rest (reverse after)))
 				    p
-				    l
-				    )))
-	
-	))
-  )
+				    l))))))
 
 (defun !move-up (id)
   (setf (players *current-combat*) (move-up id)))

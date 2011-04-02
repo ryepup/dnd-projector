@@ -2,4 +2,4 @@
 
 (defpackage :dnd-projector
   (:use :cl #:iterate)
-  (:export #:test #:start-server))
+  (:export #:start-server))
