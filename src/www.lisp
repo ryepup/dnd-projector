@@ -20,6 +20,11 @@
   (sort-players)
   (json:encode-json-to-string (players *current-combat*)))
 
+(hunchentoot:define-easy-handler (kill.json :uri "/kill.json")
+    ((id :parameter-type 'integer))
+  (kill id)
+  (json:encode-json-to-string (players *current-combat*)))
+
 (hunchentoot:define-easy-handler (reset.json :uri "/reset.json") ()
   (ensure-combat T)
   (json:encode-json-to-string (players *current-combat*)))
@@ -36,7 +41,7 @@
       (setf (initiative id) initiative))
   (if damage
       (damagem damage id))
-  
+  (projector-event (list :reset))
   (json:encode-json-to-string (players *current-combat*)))
 
 (hunchentoot:define-easy-handler (add-hostiles.json :uri "/add-hostiles.json")

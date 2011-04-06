@@ -70,7 +70,11 @@ var scribe = {
 					 {id:player.id,
 					  bloodyp:true});
 		   });
-	makeCell();
+	makeCell('KILL HIM')
+	    .click(function(){
+		       scribe.getPlayers('kill.json', 
+					 {id:player.id});
+		   });
 
 	return prow;
     }

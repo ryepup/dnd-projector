@@ -87,13 +87,11 @@
   (1+ (random 20)))
 
 (defun add-hostiles (name int-mod &key (n 1) (start (hostile-count *current-combat*)))
- 
   (dotimes (i n)
     (add-player (format nil "~a ~a" name (+ start i))
 		T (+ int-mod (d20))))
   (setf (hostile-count *current-combat*)
-	(+ n start))
-  )
+	(+ n start)))
 
 (defun kill (&rest ids)
   (setf (players *current-combat*)
