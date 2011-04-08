@@ -5,8 +5,11 @@
 (defvar *event-queue* (make-instance 'chanl:bounded-channel :size 100)
   "list of events to be processed by web frontends")
 
+(define-condition event-added () ())
+
 (defun projector-event (thing)
   "sends the thing to the project event queue"
+  (signal 'event-added)
   (chanl:send *event-queue* thing))
 
 (defvar *current-combat* nil)

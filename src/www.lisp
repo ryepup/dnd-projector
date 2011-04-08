@@ -33,15 +33,22 @@
     ((id :parameter-type 'integer) name bloodyp
      (initiative :parameter-type 'integer)
      (damage :parameter-type 'integer))
-  (if name
-      (rename id name))
-  (if bloodyp
-      (bloodym :toggle id))
-  (if initiative
-      (setf (initiative id) initiative))
-  (if damage
-      (damagem damage id))
-  (projector-event (list :reset))
+
+  (let ((foo))
+    (handler-bind ((event-added #'(lambda (cnd)
+				    (declare (ignore cnd))
+				    (setf foo T))))
+      (if name
+	  (rename id name))
+      (if bloodyp
+	  (bloodym :toggle id))
+      (if initiative
+	  (setf (initiative id) initiative))
+      (if damage
+	  (damagem damage id)))
+    (unless foo
+      (projector-event (list :reset))))
+
   (json:encode-json-to-string (players *current-combat*)))
 
 (hunchentoot:define-easy-handler (add-hostiles.json :uri "/add-hostiles.json")
