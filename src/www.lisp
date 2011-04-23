@@ -9,8 +9,11 @@
   (json:encode-json-to-string (players *current-combat*)))
 
 (hunchentoot:define-easy-handler (projector.json :uri "/projector.json") ()
-  (let ((event (chanl:recv *event-queue*)))
-    (json:encode-json-to-string event)))
+  (let ((event (chanl:recv *event-queue* :blockp T)))
+
+    (json:encode-json-to-string
+     (if event event
+	 (progn (sleep 2) (list :noop))))))
 
 (hunchentoot:define-easy-handler (turn.json :uri "/turn.json") ()
   (turn)
@@ -57,6 +60,11 @@
      (n :parameter-type 'integer))
   (add-hostiles name init :n n)
   
+  (json:encode-json-to-string (players *current-combat*)))
+
+(hunchentoot:define-easy-handler (move-up.json :uri "/move-up.json")
+    ((id :parameter-type 'integer))
+  (!move-up id)
   (json:encode-json-to-string (players *current-combat*)))
 
 ;; (defun move-down (id)

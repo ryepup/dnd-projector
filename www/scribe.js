@@ -76,6 +76,12 @@ var scribe = {
 					 {id:player.id});
 		   });
 
+	makeCell('move up')
+	    .click(function(){
+		       scribe.getPlayers('move-up.json', 
+					 {id:player.id});
+		   });
+
 	return prow;
     }
 };
