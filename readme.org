@@ -1,16 +1,10 @@
 
 * Overview
 
-  This is a hobby project to use a mini-projector with my eeepc to
+  This is a hobby project to use a mini-projector with my laptop to
   ease DND bookkeepping.
 
-  This will be controlled via an old TV remote, and displayed via a
-  web browser.
-
 * web UI
-
-  Uses jquery to fetch the latest IR command, with the HTTP request
-  blocking until we get input.
 
 ** combat tracker
 *** DONE enter to begin
@@ -58,9 +52,9 @@
 ** post-combat stats display
 ** scribe UI
    This is a small form factor page designed for my android phone.
-*** monster entry
-*** next turn
-*** start combat
+*** DONE monster entry
+*** DONE next turn
+*** DONE start combat
 *** reordering
 ** projector page
    This is a large form factor page meant for display on a TV or
@@ -84,9 +78,29 @@
 
 ** scribe pushes events
 ** projector subscribes
+** event push/pull
+*** Functionality desired
+    Projector page makes AJAX request, which blocks until there's an
+    event for it.  Want to work out long-lived AJAX calls instead of
+    polling.
+
+    Support multiple projector clients.
+
+    Support 1 scribe client.
+*** Implementation ideas
+**** event counter
+     Server keeps an incrementing counter for each event the scribe
+     makes.
+
+     Projector pulls an event count from the server, passes that back
+     with AJAX requests so it gets all events in order.
+**** pub sub
+     Projector clients block on expecting a response, scribe publish
 ** DONE nginx
    CLOCK: [2011-01-16 Sun 20:46]--[2011-01-16 Sun 23:50] =>  3:04
-** jquery event pull
-   CLOCK: [2011-01-23 Sun 10:49]
+** DONE jquery event pull
 * bugs
-** selected/highlighted weirdness with the mute button and allocating damage
+** multiple projector problems
+   1. open one scribe, two projector clients
+   2. projector -> nginx -> lisp -> block on redis sub
+   3. projector -> nginx ?> lisp ?> block on redis sub
