@@ -10,4 +10,4 @@
 			 (:file "dnd")
 			 (:file "www"))))
   :depends-on (#:cl-ppcre #:chanl #:alexandria #:iterate
-			  #:hunchentoot #:cl-json))
+			  #:hunchentoot #:cl-json #:cl-redis))

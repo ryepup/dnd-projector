@@ -9,11 +9,15 @@
   (json:encode-json-to-string (players *current-combat*)))
 
 (hunchentoot:define-easy-handler (projector.json :uri "/projector.json") ()
-  (let ((event (chanl:recv *event-queue* :blockp T)))
-
-    (json:encode-json-to-string
-     (if event event
-	 (progn (sleep 2) (list :noop))))))
+  (redis:with-connection ()
+    (redis:red-incr "waiting")
+    (redis:red-subscribe +projector-event-channel+)
+    (destructuring-bind (type channel json)
+	(redis:expect :multi)
+      (declare (ignore type channel))
+      (redis:red-unsubscribe +projector-event-channel+)
+      (redis:red-decr "waiting")
+      json)))
 
 (hunchentoot:define-easy-handler (turn.json :uri "/turn.json") ()
   (turn)

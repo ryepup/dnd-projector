@@ -3,7 +3,7 @@ var dnd = {
 	console.log('waiting for event');
 	dnd.req = $.ajax({url:"projector.json", dataType:"json",
 			  success:dnd.handleEvent,
-			  timeout:5*60*1000,
+			  timeout:60*60*1000,
 			  error:function(x,y,z){
 			      console.log('error',x,y,z);
 			      dnd.nextEvent();
@@ -11,7 +11,7 @@ var dnd = {
 			 });
     },
     handleEvent:function(dndEvent){
-	console.log('got event ', dndEvent);
+	console.log(new Date(), 'got event ', dndEvent);
 	evtType = dndEvent[0];
 	evtData = dndEvent[1];
 

@@ -2,15 +2,16 @@
 
 (in-package :dnd-projector)
 
-(defvar *event-queue* (make-instance 'chanl:bounded-channel :size 100)
-  "list of events to be processed by web frontends")
+(defparameter +projector-event-channel+ "pec")
 
 (define-condition event-added () ())
 
 (defun projector-event (thing)
   "sends the thing to the project event queue"
   (signal 'event-added)
-  (chanl:send *event-queue* thing))
+  (redis:with-connection ()
+    (redis:red-publish +projector-event-channel+
+		       (json:encode-json-to-string thing))))
 
 (defvar *current-combat* nil)
 
