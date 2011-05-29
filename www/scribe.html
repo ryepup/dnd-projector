@@ -2,27 +2,37 @@
 <html>
   <head>
     <title>Controller</title>
-    <link href="clear.css" rel="stylesheet"/>
+    <link href="jquery.lcars/src/jquery.lcars.bootstrap.css" rel="stylesheet" type="text/css"/>
     <script src="jquery.min.js"></script>
     <script src="scribe.js"></script>
+    <script src="jquery.lcars/src/jquery.lcars.bootstrap.js"></script>
   </head>
   <body>
-    <button id="turn">Turn</button>
-    <button disabled="true">Delay</button>
-    <hr/>
-    <table>
-      <thead>
-	<th>Name</th>
-	<th>Init</th>
-	<th>Damage</th>
-	<th>Bloody</th>
-	<th>&nbsp;</th>
-      </thead>
-      <tbody/>
-    </table>    
-    <hr/>
-    <button id="reset">Reset Combat</button>
-    <button id="add-hostiles">Add Hostiles</button>
-    <button id="sort">Sort by initiative</button>
+    <div class="lcars-tframe" style="height:100%;">
+      <div class="lcars-upper">
+	<h3>DND Combat Scribe</h3>
+	<ul class="lcars-nav">
+	  <li id="reset">Reset Combat</li> 
+	</ul>
+	<button id="turn" class="lcars-button lcars-orange">Turn</button> 
+      </div>
+      <div class="lcars-lower">
+	<ul class="lcars-nav">
+	  <li></li>
+	  <li id="add-hostiles">Add Hostiles</li>
+	  <li id="sort">Sort by init</li>
+	</ul>
+	<table cellpadding="3">
+	  <thead>
+	    <td>Name</td>
+	    <td>Init</td>
+	    <td>Damage</td>
+	    <td>Bloody</td>
+	    <td>&nbsp;</td>
+	  </thead>
+	  <tbody/>
+	</table>
+      </div>
+    </div>
   </body>
 </html>

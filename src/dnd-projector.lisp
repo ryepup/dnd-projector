@@ -5,13 +5,12 @@
 (defparameter +projector-event-channel+ "pec")
 
 (define-condition event-added () ())
+(defvar *events* nil)
 
 (defun projector-event (thing)
   "sends the thing to the project event queue"
   (signal 'event-added)
-  (redis:with-connection ()
-    (redis:red-publish +projector-event-channel+
-		       (json:encode-json-to-string thing))))
+  (push thing *events*))
 
 (defvar *current-combat* nil)
 

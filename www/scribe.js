@@ -39,8 +39,8 @@ var scribe = {
     },
     makePlayer:function(player){
 	var prow = $('<tr>').attr('id', 'p'+player.id);
-	var makeCell = function(label){
-	    var cell = $('<button>');
+	var makeCell = function(label, tag){
+	    var cell = $(tag || '<button>');
 	    cell.text(label);
 	    prow.append($('<td>').append(cell));
 	    return cell;
@@ -56,12 +56,14 @@ var scribe = {
 			       scribe.getPlayers('player.json', 
 						 data);
 			   }
-		       });
+		       })
+		.addClass('lcars-button');
 	    
 	};
 	playerEditBtn(player.name, 'New name', 'name');
 	playerEditBtn(player.initiative, 'New initiative', 
 		      'initiative');
+
 	playerEditBtn(player.damage, 'New damage', 'damage', 1);
 
 	makeCell(player.bloodiedP ? "Bloody" : "OK")
@@ -69,23 +71,30 @@ var scribe = {
 		       scribe.getPlayers('player.json', 
 					 {id:player.id,
 					  bloodyp:true});
-		   });
-	makeCell('KILL HIM')
-	    .click(function(){
-		       scribe.getPlayers('kill.json', 
-					 {id:player.id});
-		   });
+		   })
+	    .addClass('lcars-button')
+	    .addClass(player.bloodiedP ? "lcars-pink" : 'lcars-lcars-red');
 
 	makeCell('move up')
 	    .click(function(){
 		       scribe.getPlayers('move-up.json', 
 					 {id:player.id});
-		   });
+		   })
+	    .addClass('lcars-button')
+	    .addClass('lcars-tan');
+
+	makeCell('KILL HIM')
+	    .click(function(){
+		       scribe.getPlayers('kill.json', 
+					 {id:player.id});
+		   })
+	    .addClass('lcars-button')
+	    .addClass('lcars-red');
 
 	return prow;
     }
 };
 
 $(document).ready(function(){
-		      scribe.init();
+		      scribe.init();		      
 		  });

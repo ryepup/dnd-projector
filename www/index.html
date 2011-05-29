@@ -4,7 +4,7 @@
     <title>Projector</title>
     <link href="clear.css" rel="stylesheet"/>
     <style>
-      html {height:100%; margin:0; padding:0; overflow-y:hidden;}
+      html {height:100%; margin:0; padding:0; overflow-y:hidden; font-size:1.5em;}
       body{  height:99%; margin:0; padding:0; overflow-y:hidden;
       background: -moz-linear-gradient(top, #FFFFFF 50%, #000000 100%); /* firefox */
       
@@ -21,18 +21,20 @@
       background-color:#8f8;
       font-size:0.6em;
       }
-      .hostile {color:#600; background-color:#Fdd !important; }
-      .bloody {border-style:dotted !important; 
-      margin
--left:3em !important;}
+      .hostile {color:#600; background-color:#Fdd !important; 
+        margin-left:2em !important;
+      }
+      .bloody {
+      border-style:dotted !important; 
+      background-color:#F88 !important;
+      }
 
       #combatants li:first-child {font-size:1.5em; border-width:5px;}
       
       .atbat {font-size:1em !important; border-width:3px !important;}
       .damage {float:right;}
       .name, .init, .id {float:left;}
-      .id {opacity:0.5; padding-left:3em;}
-      .init {width:40px;}
+      .init {width:80px;}
     </style>
     <script src="jquery.min.js"></script>
     <script src="projector.js"></script>
